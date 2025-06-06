@@ -1,0 +1,35 @@
+ValorDeMiCasa.com
+
+1º Crear Proyecto:
+npx create-next-app valor-de-mi-casa
+√ Would you like to use TypeScript? ... No
+√ Would you like to use ESLint? ... Yes
+√ Would you like to use Tailwind CSS? ... Yes
+√ Would you like your code inside a `src/` directory? ... Yes
+√ Would you like to use App Router? (recommended) ... Yes
+√ Would you like to use Turbopack for `next dev`? ... No
+√ Would you like to customize the import alias (`@/*` by default)? » No
+
+2º Colocarse en la ruta:
+C:\Users\lucas\VisualStudio\valor-de-mi-casa
+
+3º Iniciar Proyecto
+npm run dev
+
+
+- Librerias:
+npm install react-icons
+npm install pg
+npm install react-select
+
+
+
+- Prompt IA:
+En Next.js, crea una aplicación web de una sola página (SPA) que permita a los usuarios estimar el valor de su vivienda. La aplicación debe tener los siguientes campos de entrada para que el usuario seleccione y complete:
+-Comunidad Autónoma: Un menú desplegable para seleccionar la comunidad autónoma.
+-Municipio: Un menú desplegable que se actualice dinámicamente según la comunidad autónoma seleccionada.
+-Distrito: Un menú desplegable que se actualice dinámicamente según el municipio seleccionado.
+-Barrio: Un menú desplegable que se actualice dinámicamente según el distrito seleccionado.
+-Metros Cuadrados: Un campo de entrada numérico para que el usuario introduzca los metros cuadrados de su casa.
+Una vez que el usuario haya seleccionado todos los campos y añadido los metros cuadrados, la aplicación debe calcular y mostrar el precio estimado de la vivienda. Para el cálculo, asume que existe una base de datos interna (o simula una estructura de datos en el código) que contiene el precio por metro cuadrado para cada barrio.
+La interfaz debe ser intuitiva, moderna y responsive, adaptándose bien a diferentes tamaños de pantalla.
