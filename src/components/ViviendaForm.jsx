@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import ComunidadSelector from '@/components/ComunidadSelector';
+import InfoTooltip from './InfoTooltip';
 
 export default function ViviendaForm() {
   const [comunidades, setComunidades] = useState([]);
@@ -22,7 +22,8 @@ export default function ViviendaForm() {
   });
 
   const [datosBarrio, setDatosBarrio] = useState(null);
-  const [valorEstimado, setValorEstimado] = useState(null);
+  const [valorEstimadoVenta, setValorEstimadoVenta] = useState(null);
+  const [valorEstimadoAlquiler, setValorEstimadoAlquiler] = useState(null);
 
   // Cargar comunidades al inicio
   useEffect(() => {
@@ -64,6 +65,80 @@ export default function ViviendaForm() {
     }
   }, [form.distrito]);
 
+    // Función para formatear labels
+    const formatLabel = (str) =>
+      str
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (l) => l.toUpperCase());
+
+    // Transforma cada array en opciones para react-select y tambien formatea las etiquetas
+    const comunidadOptions = comunidades.map(c => ({ label: formatLabel(c), value: c }));
+    const provinciaOptions = provincias.map(p => ({ label: formatLabel(p), value: p }));
+    const municipioOptions = municipios.map(m => ({ label: formatLabel(m), value: m }));
+    const distritoOptions = distritos.map(d => ({ label: formatLabel(d), value: d }));
+    const barrioOptions = barrios.map(b => ({ label: formatLabel(b), value: b }));
+
+  // Manejar cambios en las selecciones
+  const handleChangeComunidad = (option) => {
+    const comunidad = option?.value || '';
+    setForm(prev => ({
+      ...prev,
+      comunidad,
+      provincia: '',
+      municipio: '',
+      distrito: '',
+      barrio: '',
+    }));
+    setProvincias([]);
+    setMunicipios([]);
+    setDistritos([]);
+    setBarrios([]);
+  };
+
+  const handleChangeProvincia = (option) => {
+    const provincia = option?.value || '';
+    setForm(prev => ({
+      ...prev,
+      provincia,
+      municipio: '',
+      distrito: '',
+      barrio: '',
+    }));
+    setMunicipios([]);
+    setDistritos([]);
+    setBarrios([]);
+  };
+
+  const handleChangeMunicipio = (option) => {
+    const municipio = option?.value || '';
+    setForm(prev => ({
+      ...prev,
+      municipio,
+      distrito: '',
+      barrio: '',
+    }));
+    setDistritos([]);
+    setBarrios([]);
+  };
+
+  const handleChangeDistrito = (option) => {
+    const distrito = option?.value || '';
+    setForm(prev => ({
+      ...prev,
+      distrito,
+      barrio: '',
+    }));
+    setBarrios([]);
+  };
+
+  const handleChangeBarrio = (option) => {
+    const barrio = option?.value || '';
+    setForm(prev => ({
+      ...prev,
+      barrio,
+    }));
+  };
+
   // Manejar cambio
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,24 +148,30 @@ export default function ViviendaForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDatosBarrio(null);
-    setValorEstimado(null);
+    setValorEstimadoVenta(null);
+    setValorEstimadoAlquiler(null);
 
     const res = await fetch(`/api/app1/GetDatosBarrio?barrio=${form.barrio}`);
     const data = await res.json();
     setDatosBarrio(data);
 
-    if (data?.precompram2barrio && form.metros) {
-      const total = parseFloat(data.precompram2barrio) * parseFloat(form.metros);
-      setValorEstimado(total.toFixed(2));
+    if (form.metros) {
+      if (data?.precompram2barrio !== null && data?.precompram2barrio !== undefined) {
+        const totalPrecioVenta = parseFloat(data.precompram2barrio) * parseFloat(form.metros);
+        setValorEstimadoVenta(totalPrecioVenta.toLocaleString('es-ES', { minimumFractionDigits: 0 }));
+      } else {
+        setValorEstimadoVenta(null);
+      }
+
+      if (data?.prealquilerm2barrio !== null && data?.prealquilerm2barrio !== undefined) {
+        const totalPrecioAlquiler = parseFloat(data.prealquilerm2barrio) * parseFloat(form.metros);
+        setValorEstimadoAlquiler(totalPrecioAlquiler.toLocaleString('es-ES', { minimumFractionDigits: 0 }));
+      } else {
+        setValorEstimadoAlquiler(null);
+      }
     }
   };
 
-  // Transforma cada array en opciones para react-select
-  const comunidadOptions = comunidades.map(c => ({ label: c, value: c }));
-  const provinciaOptions = provincias.map(p => ({ label: p, value: p }));
-  const municipioOptions = municipios.map(m => ({ label: m, value: m }));
-  const distritoOptions = distritos.map(d => ({ label: d, value: d }));
-  const barrioOptions = barrios.map(b => ({ label: b, value: b }));
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 bg-white shadow rounded-xl space-y-4">
@@ -100,7 +181,7 @@ export default function ViviendaForm() {
       <Select
         options={comunidadOptions}
         value={comunidadOptions.find((opt) => opt.value === form.comunidad)}
-        onChange={(option) =>setForm((prev) => ({ ...prev, comunidad: option?.value || '' }))}
+        onChange={handleChangeComunidad}
         placeholder="Selecciona Comunidad Autónoma"
         isClearable
         className="basic-single"
@@ -111,7 +192,7 @@ export default function ViviendaForm() {
         <Select
           options={provinciaOptions}
           value={provinciaOptions.find(opt => opt.value === form.provincia)}
-          onChange={(option) =>setForm((prev) => ({ ...prev, provincia: option?.value || '' }))}
+          onChange={handleChangeProvincia}
           placeholder="Selecciona Provincia"
           isClearable
           className="basic-single"
@@ -123,7 +204,7 @@ export default function ViviendaForm() {
         <Select
           options={municipioOptions}
           value={municipioOptions.find(opt => opt.value === form.municipio)}
-          onChange={(option) =>orm((prev) => ({ ...prev, municipio: option?.value || '' }))}
+          onChange={handleChangeMunicipio}
           placeholder="Selecciona Municipio"
           isClearable
           className="basic-single"
@@ -135,7 +216,7 @@ export default function ViviendaForm() {
         <Select
           options={distritoOptions}
           value={distritoOptions.find(opt => opt.value === form.distrito)}
-          onChange={(option) =>((prev) => ({ ...prev, distrito: option?.value || '' }))}
+          onChange={handleChangeDistrito}
           placeholder="Selecciona Distrito"
           isClearable
           className="basic-single"
@@ -147,7 +228,7 @@ export default function ViviendaForm() {
         <Select
           options={barrioOptions}
           value={barrioOptions.find(opt => opt.value === form.barrio)}
-          onChange={(option) =>setForm((prev) => ({ ...prev, barrio: option?.value || '' }))}
+          onChange={handleChangeBarrio}
           placeholder="Selecciona Barrio"
           isClearable
           className="basic-single"
@@ -170,13 +251,47 @@ export default function ViviendaForm() {
         Calcular Valor Estimado
       </button>
 
-      {valorEstimado && datosBarrio && (
-        <div className="mt-4 bg-gray-50 p-4 border rounded shadow-sm">
-          <p><strong>Precio Compra/m²:</strong> {datosBarrio.precompram2barrio} €</p>
-          <p><strong>Precio Alquiler/m²:</strong> {datosBarrio.prealquilerm2barrio} €</p>
-          <p><strong>Rentabilidad:</strong> {datosBarrio.rentabilidad} %</p>
+      {datosBarrio && (
+        <div className="mt-4 bg-gray-50 p-4 border rounded shadow-sm space-y-2">
+          {valorEstimadoVenta && (
+            <div className="flex items-center gap-1">
+              <InfoTooltip title="" tooltip="Precio medio de compra por metro cuadrado en el barrio." theme="dark"/>
+              <span className="font-semibold">Precio Compra/m²:</span>
+              <span>{datosBarrio.precompram2barrio} €</span>
+            </div>
+          )}
+          {valorEstimadoAlquiler && (
+             <>
+            <div className="flex items-center gap-1">
+              <InfoTooltip title="" tooltip="Precio medio de alquiler por metro cuadrado en el barrio." theme="dark"/>
+              <span className="font-semibold">Precio Alquiler/m²:</span>
+              <span>{datosBarrio.prealquilerm2barrio} €</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <InfoTooltip title="" tooltip="Porcentaje que representa la rentabilidad del alquiler." theme="dark"/>
+              <span className="font-semibold">Rentabilidad:</span>
+              <span>{datosBarrio.rentabilidad} %</span>
+            </div>
+            </>
+          )}
+
           <hr className="my-2" />
-          <p className="text-lg font-semibold">Valor estimado: <span className="text-green-700">{valorEstimado} €</span></p>
+
+          {valorEstimadoVenta && (
+            <div className="flex items-center gap-1">
+              <InfoTooltip title="" tooltip="Valor total estimado para vender la propiedad según los metros cuadrados indicados." theme="dark"/>
+              <span className="text-lg font-semibold">Valor estimado de Venta:</span>
+              <span className="text-lg font-semibold text-green-700">{valorEstimadoVenta} €</span>
+            </div>
+          )}
+          {valorEstimadoAlquiler && (
+            <div className="flex items-center gap-1">
+              <InfoTooltip title="" tooltip="Valor total estimado para alquilar la propiedad según los metros cuadrados indicados." theme="dark"/>
+              <span className="text-lg font-semibold">Valor estimado de Alquiler:</span>
+              <span className="text-lg font-semibold text-green-700">{valorEstimadoAlquiler} €</span>
+            </div>
+          )}
         </div>
       )}
     </form>

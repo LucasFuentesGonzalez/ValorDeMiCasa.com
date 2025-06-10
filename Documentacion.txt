@@ -21,6 +21,7 @@ npm run dev
 npm install react-icons
 npm install pg
 npm install react-select
+npm install react-tooltip
 
 
 
