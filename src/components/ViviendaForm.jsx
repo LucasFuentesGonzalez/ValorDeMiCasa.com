@@ -21,6 +21,7 @@ export default function ViviendaForm() {
     metros: '',
   });
 
+  const [mensajeError, setMensajeError] = useState('');
   const [datosBarrio, setDatosBarrio] = useState(null);
   const [valorEstimadoVenta, setValorEstimadoVenta] = useState(null);
   const [valorEstimadoAlquiler, setValorEstimadoAlquiler] = useState(null);
@@ -147,9 +148,16 @@ export default function ViviendaForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensajeError(''); // Reinicia el mensaje de error
     setDatosBarrio(null);
     setValorEstimadoVenta(null);
     setValorEstimadoAlquiler(null);
+
+    // Verificar si faltan campos requeridos
+    if (!form.comunidad || !form.provincia || !form.municipio || !form.distrito || !form.barrio || !form.metros) {
+      setMensajeError('Por favor, completa todos los campos antes de continuar.');
+      return;
+    }
 
     const res = await fetch(`/api/app1/GetDatosBarrio?barrio=${form.barrio}`);
     const data = await res.json();
@@ -244,12 +252,17 @@ export default function ViviendaForm() {
         onChange={handleChange}
         className="w-full p-2 border rounded"
         min="1"
-        required
       />
 
       <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
         Calcular Valor Estimado
       </button>
+
+      {mensajeError && (
+        <div className="text-red-600 font-semibold bg-red-100 p-2 rounded">
+          {mensajeError}
+        </div>
+      )}
 
       {datosBarrio && (
         <div className="mt-4 bg-gray-50 p-4 border rounded shadow-sm space-y-2">
