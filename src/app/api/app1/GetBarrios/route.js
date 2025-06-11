@@ -3,14 +3,24 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const distrito = searchParams.get('distrito');
+  try {
+    const { searchParams } = new URL(request.url);
+    const distrito = searchParams.get('distrito');
 
-  const result = await pool.query(`
-    SELECT DISTINCT barrio FROM "RealEstateExplorer"."tDatosAuxiliaresESP"
-    WHERE distrito = $1
-    ORDER BY barrio ASC
-  `, [distrito]);
+    if (!distrito) {
+      return NextResponse.json({ error: 'Parámetro "distrito" requerido' }, { status: 400 });
+    }
 
-  return NextResponse.json(result.rows.map(row => row.barrio));
+    const result = await pool.query(`
+      SELECT DISTINCT barrio
+      FROM "RealEstateExplorer"."tDatosAuxiliaresESP"
+      WHERE distrito = $1
+      ORDER BY barrio ASC
+    `, [distrito]);
+
+    return NextResponse.json(result.rows.map(row => row.barrio));
+  } catch (error) {
+    console.error('Error en GetBarrios:', error);
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
+  }
 }

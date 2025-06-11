@@ -3,22 +3,31 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const barrio = searchParams.get('barrio');
+  try {
+    const { searchParams } = new URL(request.url);
+    const barrio = searchParams.get('barrio');
 
-  const result = await pool.query(`
-    SELECT 
-      prealquilerm2barrio, 
-      precompram2barrio, 
-      rentabilidad
-    FROM "RealEstateExplorer"."tDatosAuxiliaresESP"
-    WHERE barrio = $1
-    LIMIT 1
-  `, [barrio]);
+    if (!barrio) {
+      return NextResponse.json({ error: 'Parámetro "barrio" requerido' }, { status: 400 });
+    }
 
-  if (result.rows.length === 0) {
-    return NextResponse.json({ error: 'Barrio no encontrado' }, { status: 404 });
+    const result = await pool.query(`
+      SELECT 
+        prealquilerm2barrio, 
+        precompram2barrio, 
+        rentabilidad
+      FROM "RealEstateExplorer"."tDatosAuxiliaresESP"
+      WHERE barrio = $1
+      LIMIT 1
+    `, [barrio]);
+
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: 'Barrio no encontrado' }, { status: 404 });
+    }
+
+    return NextResponse.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error en GetDatosBarrio:', error);
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
   }
-
-  return NextResponse.json(result.rows[0]);
 }
