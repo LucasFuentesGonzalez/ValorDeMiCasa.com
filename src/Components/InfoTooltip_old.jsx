@@ -32,5 +32,5 @@ const InfoTooltip = ({ title, tooltip, theme = 'dark' }) => {
       </div>
    );
 };
-
+ 
 export default InfoTooltip;

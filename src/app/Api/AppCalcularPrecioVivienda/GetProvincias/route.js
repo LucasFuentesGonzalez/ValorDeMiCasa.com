@@ -1,6 +1,6 @@
 // src/app/api/app1/GetProvincias/route.js
 import { NextResponse } from 'next/server';
-import pool from '@/lib/db';
+import pool from '@/Lib/db';
 
 export async function GET(request) {
   try {
