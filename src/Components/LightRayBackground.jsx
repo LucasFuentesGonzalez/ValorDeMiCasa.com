@@ -1,3 +1,4 @@
+// src/Components/LightRayBackground.jsx
 'use client'
 
 export default function LightRayBackground() {

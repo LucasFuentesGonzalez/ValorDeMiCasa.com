@@ -1,4 +1,4 @@
-// src/components/InfoTooltip.jsx# 
+// src/Components/InfoTooltip.jsx
 'use client';
 
 import React from 'react';

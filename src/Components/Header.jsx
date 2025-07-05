@@ -1,4 +1,4 @@
-// src/components/Header.jsx
+// src/Components/Header.jsx
 'use client'
 
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa'

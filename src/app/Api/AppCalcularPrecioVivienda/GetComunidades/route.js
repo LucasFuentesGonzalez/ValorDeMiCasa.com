@@ -1,4 +1,4 @@
-// src/app/api/app1/GetComunidades/route.js
+// src/app/Api/AppCalcularPrecioVivienda/GetComunidades/route.js
 import { NextResponse } from 'next/server';
 import pool from '@/Lib/db';
 

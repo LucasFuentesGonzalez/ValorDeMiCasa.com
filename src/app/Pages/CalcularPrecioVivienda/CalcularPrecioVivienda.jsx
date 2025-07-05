@@ -1,4 +1,4 @@
-// src/components/CalcularPrecioVivienda.jsx
+// src/app/Pages/CalcularPrecioVivienda.jsx
 'use client';
 
 import { useEffect, useState } from 'react';

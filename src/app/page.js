@@ -4,7 +4,7 @@
 import Header from '@/Components/Header';
 import CalcularPrecioVivienda from '@/app/Pages/CalcularPrecioVivienda/CalcularPrecioVivienda';
 import Footer from '@/Components/Footer';
-import LightRayBackground from '@/components/LightRayBackground'
+import LightRayBackground from '@/Components/LightRayBackground'
 
 export default function HomePage() {
   return (

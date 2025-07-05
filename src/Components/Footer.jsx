@@ -1,4 +1,4 @@
-// src/components/Footer.jsx
+// src/Components/Footer.jsx
 'use client'
 
 import Link from 'next/link'

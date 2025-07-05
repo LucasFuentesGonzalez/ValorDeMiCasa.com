@@ -1,4 +1,4 @@
-// src/lib/db.js
+// src/Lib/db.js
 import { Pool } from 'pg';
 
 let pool;

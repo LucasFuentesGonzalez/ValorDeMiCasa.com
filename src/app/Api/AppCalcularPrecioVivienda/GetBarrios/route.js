@@ -1,4 +1,4 @@
-// src/app/api/app1/GetBarrios/route.js
+// src/app/Api/AppCalcularPrecioVivienda/GetBarrios/route.js
 import { NextResponse } from 'next/server';
 import pool from '@/Lib/db';
 
