@@ -1,12 +1,22 @@
 // src/app/page.jsx
 "use client";
 
-import ViviendaForm from '@/components/ViviendaForm';
+import Header from '@/Components/Header';
+import CalcularPrecioVivienda from '@/app/Pages/CalcularPrecioVivienda/CalcularPrecioVivienda';
+import Footer from '@/Components/Footer';
+import LightRayBackground from '@/components/LightRayBackground'
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gray-100 py-10">
-        <ViviendaForm />
+    <main className="h-screen flex flex-col justify-between">
+      <Header />
+      <LightRayBackground />
+
+      <div className="flex-grow flex items-center justify-center">
+        <CalcularPrecioVivienda />
+      </div>
+
+      <Footer />
     </main>
   );
 }

@@ -1,29 +1,22 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+// src/app/layout.jsx
+import { Inter } from 'next/font/google'
+import './globals.css'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({
+   subsets: ['latin'],
+})
 
 export const metadata = {
-  title: "Valor de mi casa",
-  description: "Calcula el valor estimado de tu vivienda en España",
+   title: "Valor de mi casa",
+   description: "Calcula el valor estimado de tu vivienda en España",
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="es">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 text-gray-900`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+   return (
+      <html lang="es" className={inter.className}>
+         <body className="bg-[#101010] text-white">
+            {children}
+         </body>
+      </html>
+   );
 }
