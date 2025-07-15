@@ -2,7 +2,7 @@
 "use client";
 
 import Header from '@/Components/Header';
-import CalcularPrecioVivienda from '@/app/Pages/CalcularPrecioVivienda/CalcularPrecioVivienda';
+import CalcularPrecioVivienda from '@/app/calcular-precio-vivienda/page';
 import Footer from '@/Components/Footer';
 import LightRayBackground from '@/Components/LightRayBackground'
 

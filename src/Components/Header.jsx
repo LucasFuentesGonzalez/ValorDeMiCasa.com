@@ -21,7 +21,7 @@ export default function Header() {
             <Link href="#inicio" className="hover:text-white transition">Inicio</Link>
             <Link href="#servicios" className="hover:text-white transition">Servicios</Link>
             <Link href="#sobre" className="hover:text-white transition">Sobre Nosotros</Link>
-            <Link href="#contacto" className="hover:text-white transition">Contacto</Link>
+            <Link href="/contacto" className="hover:text-white transition">Contacto</Link>
          </nav>
 
          {/* Bloque: Redes sociales */}

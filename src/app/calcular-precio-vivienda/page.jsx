@@ -1,10 +1,10 @@
-// src/app/Pages/CalcularPrecioVivienda.jsx
+// src/app/calcular-precio-vivienda/page.jsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { IoArrowRedoSharp } from "react-icons/io5";
 import Select from 'react-select';
-import InfoTooltip from '../../../Components/InfoTooltip';
+import InfoTooltip from '../../Components/InfoTooltip';
 
 
 export default function CalcularPrecioVivienda() {
